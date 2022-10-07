@@ -3,7 +3,9 @@ namespace TroopsAI
     public interface ITroopsActions
     {
         void StartChasing();
-        void Attack();
+        void StopChasing();
+        void StartAttack();
+        void StopAttack();
         void Die();
     }
 
