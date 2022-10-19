@@ -5,8 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Basics Humanoid Property", fileName = "New Humanoids")]
 public class HumanoidProperty : ScriptableObject
 {
-    // todo Each level should kill 2 enemy on one level less than current. example 3War1LVL >= War2LVL > 2War1LVL
-
 
     [Space]
     [Header("Property")]
@@ -33,8 +31,6 @@ public class HumanoidProperty : ScriptableObject
     [SerializeField] float basicDamageMultiplier;
     [Tooltip("Humanoid Basic Deffence Multiplier")]
     [SerializeField] float deffenceMultiplier;
-    //[Tooltip("Humanoid Level Multiplier for counting Property for current Humanoid Level")]
-    //[SerializeField] float levelMultiplier;
 
 
     public int Strength { get => strength; }

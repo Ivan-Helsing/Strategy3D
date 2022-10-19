@@ -1,0 +1,34 @@
+{
+    "name": "TestActions",
+    "maps": [
+        {
+            "name": "TestMap",
+            "id": "04fce5e2-45ea-4a23-ac72-9834f711edf4",
+            "actions": [
+                {
+                    "name": "DestroyCurrentEnemy",
+                    "type": "Button",
+                    "id": "f7ae53d0-5d4d-4eb9-b351-5fdbc61b85ce",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "38a67f3e-814b-45fa-9f48-474cc296d5d2",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DestroyCurrentEnemy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

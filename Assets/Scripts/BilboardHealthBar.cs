@@ -4,7 +4,17 @@ using UnityEngine;
 
 public class BilboardHealthBar : MonoBehaviour
 {
-    void Update()
+    private void OnEnable()
+    {
+        
+    }
+
+    private void OnDisable()
+    {
+        
+    }
+
+    public void ShowHealth()
     {
         transform.LookAt(transform.position + Camera.main.transform.forward);
     }

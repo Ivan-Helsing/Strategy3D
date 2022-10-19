@@ -9,7 +9,7 @@ public class WarriorAI : MonoBehaviour, ITroopsActions
     [SerializeField] HumanoidProperty humanoidProperty;
     [SerializeField] float secondsForFindNearestEnemy;
 
-    GameObject currentTarget;
+    Enemy currentEnemy;
     FindEnemies findEnemies;
 
     private float currentEnemyDistance = Mathf.Infinity;
@@ -18,6 +18,8 @@ public class WarriorAI : MonoBehaviour, ITroopsActions
 
     [Tooltip("Stop Chasing Coroutine if false")]
     public bool isAnEnemy = true;
+
+
 
     public void StartAttack()
     {
@@ -35,6 +37,12 @@ public class WarriorAI : MonoBehaviour, ITroopsActions
 
     public void StartChasing()
     {
+        if (currentEnemy != null) 
+        { 
+            currentEnemy.OnThisEnemyDie -= StartChasing;
+            StopCoroutine(ChaseNearestEnemy());
+        }
+        
         StartCoroutine(ChaseNearestEnemy());
     }
 
@@ -47,7 +55,6 @@ public class WarriorAI : MonoBehaviour, ITroopsActions
     {
         while (isAnEnemy)
         {
-            //FindEnemies();
             TargetingNearestEnemy(findEnemies.CurrentEnemies());
             MaximumAttackDistance();
             RunToTarget();
@@ -55,17 +62,6 @@ public class WarriorAI : MonoBehaviour, ITroopsActions
         }
     }
 
-    //public void FindEnemies()
-    //{
-    //    if (findEnemies.CurrentEnemies.Length == 0) { isAnEnemy = false; return; }
-
-    //    Enemy[] currentEnemies = FindObjectsOfType<Enemy>();
-    //    if (currentEnemies.Length == 0) { isAnEnemy = false; return; }
-
-    //    //TargetingNearestEnemy(currentEnemies);
-    //    //MaximumAttackDistance();
-    //    //RunToTarget();
-    //}
 
     private void TargetingNearestEnemy(Enemy[] currentEnemies)
     {
@@ -74,25 +70,31 @@ public class WarriorAI : MonoBehaviour, ITroopsActions
         currentTargetDistance = Mathf.Infinity;
         foreach (Enemy enemy in currentEnemies)
         {
+            if (!isAnEnemy) return;
             currentEnemyDistance = Vector3.Distance(transform.position, enemy.transform.position);
             if (currentEnemyDistance < currentTargetDistance)
             {
+                if (!isAnEnemy) return;
                 currentTargetDistance = currentEnemyDistance;
-                currentTarget = enemy.CurrentObject;
+                currentEnemy = enemy;
+                currentEnemy.OnThisEnemyDie += StartChasing;
             }
         }
     }
 
     public void RunToTarget()
     {
-        GetComponent<NavMeshAgent>().SetDestination(currentTarget.transform.position);
+        if (!isAnEnemy) return;
+        GetComponent<NavMeshAgent>().SetDestination(currentEnemy.gameObject.transform.position);
     }
 
     private void MaximumAttackDistance()
     {
-        attackRangeForCurrentTarget = humanoidProperty.BasicAttackRange + GetComponent<CapsuleCollider>().radius + currentTarget.GetComponent<CapsuleCollider>().radius;
-        if (Vector3.Distance(transform.position, currentTarget.transform.position) > attackRangeForCurrentTarget)
+        if (!isAnEnemy) return;
+        attackRangeForCurrentTarget = humanoidProperty.BasicAttackRange + GetComponent<CapsuleCollider>().radius + currentEnemy.gameObject.GetComponent<CapsuleCollider>().radius;
+        if (Vector3.Distance(transform.position, currentEnemy.gameObject.transform.position) > attackRangeForCurrentTarget)
         {
+            if (!isAnEnemy) return;
             GetComponent<NavMeshAgent>().stoppingDistance = attackRangeForCurrentTarget;
         }
     }
